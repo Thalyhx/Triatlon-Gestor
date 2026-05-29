@@ -5,6 +5,7 @@
 package Edu.Udistrital.BackEnd.Triatletas.Config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
 
 /**
@@ -12,12 +13,14 @@ import org.springframework.web.client.RestClient;
  * @author nath
  */
 
-
+@Configuration
 public class RestClientConfig {
     
- @Bean
-public RestClient restClient() {
-     return RestClient.create(); // Un cliente totalmente en blanco
-}
-    
+@Bean
+    public RestClient RestClient(RestClient.Builder builder) {
+        return builder
+                .baseUrl("http://localhost:9001/api/carreras") 
+                .defaultHeader("Content-Type", "application/json")
+                .build();
+    }
 }
