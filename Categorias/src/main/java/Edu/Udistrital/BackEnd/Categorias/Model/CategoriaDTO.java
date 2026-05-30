@@ -41,7 +41,7 @@ public class CategoriaDTO {
     
     @NotBlank(message = "la descripcion es obligatoria")
     @Column(length = 500,nullable = false)
-    private String desc;
+    private String descripcion;
     
     @Column(length = 500)
     private String recomendacion;

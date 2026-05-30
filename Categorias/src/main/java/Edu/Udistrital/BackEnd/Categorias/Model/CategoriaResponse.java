@@ -20,7 +20,7 @@ public class CategoriaResponse {
     
     private String nombre;
     private String tipo;
-    private String desc;
+    private String descripcion;
     private String recomendacion;
     
 }
