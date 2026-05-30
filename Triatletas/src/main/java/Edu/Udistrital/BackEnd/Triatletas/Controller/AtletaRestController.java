@@ -167,4 +167,14 @@ public class AtletaRestController {
         return ResponseEntity.ok(atletaService.consultarCarrera(identificacion));
     }
     
+    /**
+     * Endpoint de eliminar la carrera .
+     */
+    @RequestMapping(value = "/{identificacion}/eliminarCarrera", method = RequestMethod.PATCH)
+    public ResponseEntity<Void> eliminarCarrera( @PathVariable String identificacion) {
+        
+        atletaService.eliminarCarrera(identificacion);
+        return ResponseEntity.ok().build();
+    }
+    
 }

@@ -342,4 +342,18 @@ public class AtletaService {
 
         return modelMapper.map(atletaActualizado, AtletaResponse.class);
     }
+    
+    /**
+     * elimina la carrera 
+     * * @param identificacion Número de identificación 
+     */
+    @Transactional
+    public void eliminarCarrera(String identificacion) {
+        
+        AtletaDTO atleta = atletaRepository.findByIdentificacion(identificacion)
+                .orElseThrow(() -> new RuntimeException("Atleta no encontrado "));
+               
+        atleta.setIdCarrera(null);
+        atletaRepository.save(atleta);
+    }
 }

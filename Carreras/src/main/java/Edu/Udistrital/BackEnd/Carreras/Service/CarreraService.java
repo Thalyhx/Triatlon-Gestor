@@ -182,7 +182,7 @@ public class CarreraService {
     }
     
     /**
-     * Inscribe lun atleta en la lista
+     * Inscribe un atleta en la lista
      */
     @Transactional
     public void registrarAtleta(Long idCarrera, String idAtleta) {
