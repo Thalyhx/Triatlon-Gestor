@@ -24,10 +24,10 @@ import org.springframework.stereotype.Repository;
 public interface CarreraRepository extends JpaRepository<CarreraDTO, Long>{
     
       /**
-     * Busca una carrera  por su categoria
+     * Busca todas las carreras que tengan la categoría
      * 
      * @param id
-     * @return Optional  si la carrera existe
+     * @return List  si  existen carreras
      */
     List<CarreraDTO> findByIdCategoria(Long idCategoria);
     
