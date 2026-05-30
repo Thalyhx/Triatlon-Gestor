@@ -121,7 +121,7 @@ public class CategoriaService {
 
         try {
             CarreraResponse[] carreras = restClient.get()
-                    .uri("http://localhost:9001/api/carreras/Categoria" + id)
+                    .uri("http://localhost:9001/api/carreras/Categoria/" + id)
                     .retrieve()
                     .body(CarreraResponse[].class);
                     
@@ -129,6 +129,25 @@ public class CategoriaService {
             
         } catch (Exception e) {
             throw new RuntimeException("Error al buscar carreras");
+        }
+    }
+    
+    /**
+     * Elimina una carrera de una categoría
+     */
+    public void eliminarCarreraDeCategoria(Long id, Long idCarrera) {
+        
+        if (!categoriaRepository.existsById(id)) {
+            throw new RuntimeException("La categoría no existe");
+        }
+
+        try {
+            restClient.patch()
+                    .uri("http://localhost:9001/api/carreras/" + idCarrera + "/eliminarCategoria")
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (Exception e) {
+            throw new RuntimeException("No se pudo eliminar la carrera de la categoría");
         }
     }
     
