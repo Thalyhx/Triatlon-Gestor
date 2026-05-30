@@ -161,25 +161,25 @@ public class CarreraService {
      * * @param idCarrera Id de la carrera
      * @param idAtleta Id del atleta
      */
-    @Transactional
-    public void eliminarAtletaDeCarrera(Long idCarrera, String idAtleta) {
-        CarreraDTO carrera = carreraRepository.findById(idCarrera)
-                .orElseThrow(() -> new RuntimeException("Carrera no encontrada."));
+        @Transactional
+        public void eliminarAtletaDeCarrera(Long idCarrera, String idAtleta) {
+            CarreraDTO carrera = carreraRepository.findById(idCarrera)
+                    .orElseThrow(() -> new RuntimeException("Carrera no encontrada."));
 
-        if (carrera.getIdentificacionesAtletas() != null) {
-            carrera.getIdentificacionesAtletas().remove(idAtleta);
-            carreraRepository.save(carrera);
-        }
+            if (carrera.getIdentificacionesAtletas() != null) {
+                carrera.getIdentificacionesAtletas().remove(idAtleta);
+                carreraRepository.save(carrera);
+            }
 
-        try {
-            restClient.patch()
-                    .uri("http://localhost:9000/api/triatletas/" + idAtleta + "/removerCarrera")
-                    .retrieve()
-                    .toBodilessEntity();
-        } catch (Exception e) {
-            throw new RuntimeException("Error");
+            try {
+                restClient.patch()
+                        .uri("http://localhost:9000/api/triatletas/" + idAtleta + "/eliminarCarrera")
+                        .retrieve()
+                        .toBodilessEntity();
+            } catch (Exception e) {
+                throw new RuntimeException("Error");
+            }
         }
-    }
     
     /**
      * Inscribe un atleta en la lista
