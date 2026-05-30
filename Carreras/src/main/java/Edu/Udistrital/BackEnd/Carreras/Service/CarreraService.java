@@ -224,4 +224,18 @@ public class CarreraService {
                 .map(carrera-> modelMapper.map(carrera, CarreraResponse.class))
                 .toList();
     }
+    
+     /**
+     * elimina la categoria de la carrera
+     * @param id de la carrera
+     */
+    @Transactional
+    public void eliminarCategoria(Long id) {
+        
+        CarreraDTO carrera = carreraRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("carrera no encontrada"));
+               
+        carrera.setIdCategoria(null);
+        carreraRepository.save(carrera);
+    }
 }

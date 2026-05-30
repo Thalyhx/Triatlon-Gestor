@@ -159,4 +159,15 @@ public class CarreraRestController {
         List<CarreraResponse> lista = carreraService.listarTodas();
         return ResponseEntity.ok(lista);
     }
+    
+    /**
+     * Endpoint  para eliminar la categoria que tenga
+     */
+    @RequestMapping(value = "/{id}/eliminarCategoria", method = RequestMethod.PATCH)
+    public ResponseEntity<Void> eliminarCategoria(@PathVariable Long id) {
+        
+        carreraService.eliminarCategoria(id);
+        
+        return ResponseEntity.ok().build();
+    }
 }
