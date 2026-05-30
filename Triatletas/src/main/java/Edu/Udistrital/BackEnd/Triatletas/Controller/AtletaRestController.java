@@ -63,7 +63,7 @@ public class AtletaRestController {
      * @return ResponseEntity con AtletaResponse actualizado
      */
     @RequestMapping(value = "/{identificacion}/nombre", method = RequestMethod.PATCH)
-    public ResponseEntity<AtletaResponse> actualizarNombre(@PathVariable String identificacion, @RequestParam String nuevoNombre) {
+    public ResponseEntity<AtletaResponse> actualizarNombre(@PathVariable String identificacion, @RequestBody String nuevoNombre) {
         return ResponseEntity.ok(atletaService.actualizarNombre(identificacion, nuevoNombre));
     }
     
@@ -77,7 +77,7 @@ public class AtletaRestController {
      * @return ResponseEntity con AtletaResponse actualizado
      */
     @RequestMapping(value = "/{identificacion}/identificacion", method = RequestMethod.PATCH)
-    public ResponseEntity<AtletaResponse> actualizarIdentificacion( @PathVariable String identificacion, @RequestParam String nuevaIdentificacion) {
+    public ResponseEntity<AtletaResponse> actualizarIdentificacion( @PathVariable String identificacion,@RequestBody String nuevaIdentificacion) {
         return ResponseEntity.ok(atletaService.actualizarIdentificacion(identificacion, nuevaIdentificacion));
     }
     
@@ -88,7 +88,7 @@ public class AtletaRestController {
      * @return ResponseEntity con AtletaResponse actualizado
      */
     @RequestMapping(value = "/{identificacion}/categoria", method = RequestMethod.PATCH)
-    public ResponseEntity<AtletaResponse> actualizarCategoria( @PathVariable String identificacion,  @RequestParam String nuevaCategoria) {
+    public ResponseEntity<AtletaResponse> actualizarCategoria( @PathVariable String identificacion,  @RequestBody String nuevaCategoria) {
         return ResponseEntity.ok(atletaService.actualizarCategoria(identificacion, nuevaCategoria));
     }
     
@@ -101,7 +101,7 @@ public class AtletaRestController {
      * @param dto Objeto AtletaDTO con todos los datos nuevos
      * @return ResponseEntity con AtletaResponse actualizado
      */
-    @RequestMapping(value = "/{identificacion}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update/{identificacion}", method = RequestMethod.PUT)
     public ResponseEntity<AtletaResponse> actualizarAtletaCompleto(@PathVariable String identificacion, @Valid @RequestBody AtletaDTO dto) {
         return ResponseEntity.ok(atletaService.actualizarAtletaCompleto(identificacion, dto));
     }
