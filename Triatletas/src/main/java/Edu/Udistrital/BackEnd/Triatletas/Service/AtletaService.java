@@ -173,8 +173,9 @@ public class AtletaService {
      * @return Lista de AtletaResponse con todos los triatletas
      */
     public List<AtletaResponse> listarTodos() {
-        return atletaRepository.findAll()
-                .stream()
+        
+        List<AtletaDTO> atletas = atletaRepository.findAll();
+        return atletas .stream()
                 .map(atleta -> modelMapper.map(atleta, AtletaResponse.class))
                 .toList();
     }
