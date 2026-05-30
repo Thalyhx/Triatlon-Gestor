@@ -32,22 +32,6 @@ public interface CarreraRepository extends JpaRepository<CarreraDTO, Long>{
     List<CarreraDTO> findByIdCategoria(Long idCategoria);
     
      /**
-     * Busca una carrera  por su id
-     * 
-     * @param id
-     * @return Optional  si la carrera existe
-     */
-    Optional<CarreraDTO> findById(String id);
-    
-    /**
-     * Elimina carrera por id
-     * 
-     * @param id
-     */
-    @Transactional
-    void deleteById(String id);
-    
-     /**
      * Actualiza SOLO la ubicacion
      * 
      * @param id de carrera
@@ -56,7 +40,7 @@ public interface CarreraRepository extends JpaRepository<CarreraDTO, Long>{
      */
     @Modifying
     @Transactional
-    @Query("UPDATE CarreraDTO a SET c.ubicacion = :nuevaUbicacion WHERE c.id = :id")
+    @Query("UPDATE CarreraDTO c SET c.ubicacion = :nuevaUbicacion WHERE c.id = :id")
     int actualizarUbicacion( @Param("id") Long id, @Param("nuevaUbicacion") String nuevaUbicacion);
     
      /**
@@ -68,7 +52,7 @@ public interface CarreraRepository extends JpaRepository<CarreraDTO, Long>{
      */
     @Modifying
     @Transactional
-    @Query("UPDATE CarreraDTO a SET c.fecha = :nuevaFecha WHERE c.id = :id")
+    @Query("UPDATE CarreraDTO c SET c.fecha = :nuevaFecha WHERE c.id = :id")
     int actualizarFecha( @Param("id") Long id, @Param("nuevaFecha") LocalDate nuevaFecha);
     
 }
