@@ -30,5 +30,6 @@ public class AtletaDTO extends Persona{
     private String especialidad;
     private Boolean modalidadCross;
     private String foto;
+    private Long idCarrera;
     
 }

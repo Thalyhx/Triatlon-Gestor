@@ -28,6 +28,7 @@ public class AtletaResponse extends PersonaResponse{
     private String especialidad;    
     private boolean modalidadCross; 
     private String foto;    
+    private Long idCarrera;
     
     
 }

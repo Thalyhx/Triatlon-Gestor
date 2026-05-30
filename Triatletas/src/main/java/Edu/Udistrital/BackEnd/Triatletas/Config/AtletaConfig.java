@@ -17,7 +17,7 @@ import org.modelmapper.ModelMapper;
  */
 
 @Configuration
-public class RestClientConfig {
+public class AtletaConfig {
     
 @Bean
     public RestClient restClient() {
