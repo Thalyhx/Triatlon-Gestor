@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CategoriaResponse {
     
+    private Long id;
     private String nombre;
     private String tipo;
     private String descripcion;
