@@ -295,7 +295,7 @@ public class AtletaService {
  * @return respuestaFinal datos del atleta y de la carrera si tiene
  */
 
-    public Map<String, Object> ConsultarCarrera(String identificacion) {
+    public Map<String, Object> consultarCarrera(String identificacion) {
         
         AtletaDTO atleta = atletaRepository.findByIdentificacion(identificacion)
                 .orElseThrow(() -> new RuntimeException("Atleta no encontrado"));
