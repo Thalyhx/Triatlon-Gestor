@@ -35,7 +35,7 @@ public class CarreraRestController {
      
      /**
      * Consulta una carrera por su id
-     * * @param id Id de la carrera.
+     * @param id Id de la carrera.
      * @return ResponseEntity con datos código HTTP OK
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -129,12 +129,24 @@ public class CarreraRestController {
     
     /**
      * Consulta todos los triatletas de una carrera
-     * * @param id  de la carrera.
+     * @param id  de la carrera.
      * @return ResponseEntity con la lista de atletas i
      */
     @RequestMapping(value = "/{id}/atletas", method = RequestMethod.GET)
     public ResponseEntity<List<AtletaResponse>> consultarAtletasInscritos(@PathVariable Long id) {
         List<AtletaResponse> atletas = carreraService.consultarAtletasInscritos(id);
         return ResponseEntity.ok(atletas);
+    }
+    
+    /**
+     * consulta todas  las carreras de una categoria
+     *  @param idCategoria Id de la categoría.
+     * @return ResponseEntity con la lista de carreras
+     */
+    @RequestMapping(value = "/Categoria/{idCategoria}", method = RequestMethod.GET)
+    public ResponseEntity<List<CarreraResponse>> consultarPorCategoria(@PathVariable Long idCategoria) {
+        
+        List<CarreraResponse> carreras = carreraService.listaCategoria(idCategoria);
+        return ResponseEntity.ok(carreras);
     }
 }
