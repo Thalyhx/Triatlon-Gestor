@@ -283,6 +283,16 @@ public class AtletaService {
 
         // Validar que la especialidad sea permitida para la categoría
         validarEspecialidad(dto.getCategoria(), dto.getEspecialidad());
+        
+        atletaExistente.setNombre(dto.getNombre());
+        atletaExistente.setGenero(dto.getGenero());
+        atletaExistente.setCorreo(dto.getCorreo());
+        atletaExistente.setEdad(dto.getEdad());
+        atletaExistente.setCategoria(dto.getCategoria());
+        atletaExistente.setEspecialidad(dto.getEspecialidad());
+        atletaExistente.setModalidadCross(dto.getModalidadCross());
+        atletaExistente.setFoto(dto.getFoto());
+        atletaExistente.setIdCarrera(dto.getIdCarrera());
 
         AtletaDTO atletaActualizado = atletaRepository.save(atletaExistente);
 
