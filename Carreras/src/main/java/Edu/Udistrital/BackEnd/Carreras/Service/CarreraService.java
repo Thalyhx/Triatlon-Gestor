@@ -194,4 +194,16 @@ public class CarreraService {
             carreraRepository.save(carrera);
         }
     }
+    
+    /**
+     * Consulta todas las carreras que tengan id de categoria
+     */
+    public List<CarreraResponse> listaCategoria(Long idCategoria) {
+        
+        List<CarreraDTO> carreras = carreraRepository.findByIdCategoria(idCategoria);
+        
+        return carreras.stream()
+                .map(carrera -> modelMapper.map(carrera, CarreraResponse.class))
+                .toList();
+    }
 }
