@@ -6,6 +6,7 @@ package Edu.Udistrital.BackEnd.Carreras.Repository;
 
 import Edu.Udistrital.BackEnd.Carreras.Model.CarreraDTO;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,6 +23,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CarreraRepository extends JpaRepository<CarreraDTO, Long>{
     
+      /**
+     * Busca una carrera  por su categoria
+     * 
+     * @param id
+     * @return Optional  si la carrera existe
+     */
     List<CarreraDTO> findByIdCategoria(Long idCategoria);
     
      /**
@@ -30,7 +37,7 @@ public interface CarreraRepository extends JpaRepository<CarreraDTO, Long>{
      * @param id
      * @return Optional  si la carrera existe
      */
-    Optional<CarreraDTO> findByIdentificacion(String id);
+    Optional<CarreraDTO> findById(String id);
     
     /**
      * Elimina carrera por id
@@ -38,7 +45,7 @@ public interface CarreraRepository extends JpaRepository<CarreraDTO, Long>{
      * @param id
      */
     @Transactional
-    void deleteByIdentificacion(String id);
+    void deleteById(String id);
     
      /**
      * Actualiza SOLO la ubicacion
@@ -50,7 +57,7 @@ public interface CarreraRepository extends JpaRepository<CarreraDTO, Long>{
     @Modifying
     @Transactional
     @Query("UPDATE CarreraDTO a SET c.ubicacion = :nuevaUbicacion WHERE c.id = :id")
-    int actualizarUbicacion( @Param("id") String id, @Param("nuevaUbicacion") String nuevaUbicacion);
+    int actualizarUbicacion( @Param("id") Long id, @Param("nuevaUbicacion") String nuevaUbicacion);
     
      /**
      * Actualiza SOLO la fecha
@@ -62,6 +69,6 @@ public interface CarreraRepository extends JpaRepository<CarreraDTO, Long>{
     @Modifying
     @Transactional
     @Query("UPDATE CarreraDTO a SET c.fecha = :nuevaFecha WHERE c.id = :id")
-    int actualizarFecha( @Param("id") String id, @Param("nuevaFecha") String nuevaFecha);
+    int actualizarFecha( @Param("id") Long id, @Param("nuevaFecha") LocalDate nuevaFecha);
     
 }
