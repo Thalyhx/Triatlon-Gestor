@@ -116,7 +116,7 @@ public class CategoriaRestControlller {
      * @param idCarrera Id de la carrera
      * @return ResponseEntity vacío y http OK.
      */
-    @RequestMapping(value = "/{id}/Eliminarcarrera/{idCarrera}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}/eliminarCarrera/{idCarrera}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> eliminarCarreraDeCategoria( @PathVariable Long id, @PathVariable Long idCarrera) {
         categoriaService.eliminarCarreraDeCategoria(id, idCarrera);
         return ResponseEntity.ok().build();
