@@ -7,7 +7,6 @@ package Edu.Udistrital.BackEnd.Categorias.Repository;
 import Edu.Udistrital.BackEnd.Categorias.Model.CategoriaDTO;
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
