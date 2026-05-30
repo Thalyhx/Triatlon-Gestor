@@ -311,23 +311,26 @@ public class AtletaService {
         AtletaDTO atleta = atletaRepository.findByIdentificacion(identificacion)
                 .orElseThrow(() -> new RuntimeException("Atleta no encontrado"));
                 
+        Map<String, Object> respuestaFinal = new HashMap<>();
+        AtletaResponse atletaResponse = modelMapper.map(atleta, AtletaResponse.class);
+        respuestaFinal.put("atleta", atletaResponse);
+        
         if (atleta.getIdCarrera() == null) {
-            throw new RuntimeException("El atleta no está registrado en ninguna carrera.");
+            respuestaFinal.put("carrera", null);
+           return  respuestaFinal;
         }
         
-        // consulta del otro microservicio
+        try{
+        // consulta del carrera microservicio
         CarreraResponse datosCarrera = restClient.get()
                 .uri("/" + atleta.getIdCarrera())
                 .retrieve()
                 .body(CarreraResponse.class);
-        
-        AtletaResponse atletaResponse = modelMapper.map(atleta, AtletaResponse.class);
-        
-        Map<String, Object> respuestaFinal = new HashMap<>();
-        respuestaFinal.put("atleta", atletaResponse);
         respuestaFinal.put("carrera", datosCarrera); 
 
-        return respuestaFinal;
+        }catch (Exception e) { respuestaFinal.put("carrera", null);}
+        
+         return respuestaFinal;
     }
     
     /* Registrar competidor en carrera

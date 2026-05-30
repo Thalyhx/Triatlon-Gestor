@@ -1,0 +1,46 @@
+=============================================================================
+DOCUMENTACIÓN TRIATLÓN GESTOR
+=============================================================================
+
+-----------------------------------------------------------------------------
+1. CREDENCIALES DE DB
+-----------------------------------------------------------------------------
+
+spring.datasource.username=root
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=update
+
+# Microservicio Triatletas (Puerto 9000)
+spring.datasource.url=jdbc:mysql://localhost:3306/triatletas_db?createDatabaseIfNotExist=true
+
+
+# Microservicio Carreras (Puerto 9001)
+spring.datasource.url=jdbc:mysql://localhost:3306/carreras_db?createDatabaseIfNotExist=true
+
+
+# Microservicio Categorias (Puerto 9002)
+spring.datasource.url=jdbc:mysql://localhost:3306/categorias_db?createDatabaseIfNotExist=true
+
+-----------------------------------------------------------------------------
+1. ENDPOINTS
+-----------------------------------------------------------------------------
+
+1.1. MICROSERVICIO ATLETAS     URL Base: http://localhost:9000/api/atletas
+
+Listar todos:  				GET http://localhost:9000/api/atletas
+Consultar un atleta por ID: 		GET http://localhost:9000/api/atletas/{identificacion}
+Consultar carrera del atleta:		GET http://localhost:9000/api/atletas/{identificacion}/carrera
+
+Modificar el nombre de un atleta:	PATCH http://localhost:9000/api/atletas/{identificacion}/nombre
+Modificar el número de identificación:	PATCH http://localhost:9000/api/atletas/{identificacion}/identificacion
+Modificar la categoría asignada:	PATCH http://localhost:9000/api/atletas/{identificacion}/categoria
+Eliminar la carrera del atleta:		PATCH http://localhost:9000/api/atletas/{identificacion}/eliminarCarrera
+
+Registrar un atleta:			POST http://localhost:9000/api/atletas/atleta
+Inscribir el atleta en una carrera:	POST http://localhost:9000/api/atletas/{identificacion}/carrera/{idCarrera}
+
+Actualizar un atleta completo 		PUT http://localhost:9000/api/atletas/update/{identificacion}
+
+Eliminar un atleta:			DELETE http://localhost:9000/api/atletas/delete/{identificacion}
+
+
