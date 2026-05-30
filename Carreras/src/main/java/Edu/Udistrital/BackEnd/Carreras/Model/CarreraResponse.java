@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CarreraResponse {
     
+    private Long id;
     private String nombre;
     private String ubicacion;
     private LocalDate fecha;

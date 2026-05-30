@@ -143,10 +143,20 @@ public class CarreraRestController {
      *  @param idCategoria Id de la categoría.
      * @return ResponseEntity con la lista de carreras
      */
-    @RequestMapping(value = "/Categoria/{idCategoria}", method = RequestMethod.GET)
+    @RequestMapping(value = "/categoria/{idCategoria}", method = RequestMethod.GET)
     public ResponseEntity<List<CarreraResponse>> consultarPorCategoria(@PathVariable Long idCategoria) {
         
         List<CarreraResponse> carreras = carreraService.listaCategoria(idCategoria);
         return ResponseEntity.ok(carreras);
+    }
+    
+    /**
+     * Endpoint para consultar todas las carreras
+     */
+    @RequestMapping( method = RequestMethod.GET)
+    public ResponseEntity<List<CarreraResponse>> listaCarreras() {
+        
+        List<CarreraResponse> lista = carreraService.listarTodas();
+        return ResponseEntity.ok(lista);
     }
 }

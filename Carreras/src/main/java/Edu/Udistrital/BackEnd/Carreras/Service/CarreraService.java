@@ -39,6 +39,9 @@ public class CarreraService {
      */
     @Transactional
     public void eliminarCarrera(Long id) {
+         if (!carreraRepository.existsById(id)) {
+            throw new RuntimeException("la carrera no existe.");
+        }
         carreraRepository.deleteById(id);
     }
     
@@ -60,6 +63,7 @@ public class CarreraService {
       
         return modelMapper.map(carreraGuardada, CarreraResponse.class);
     }
+    
     
      /**
      * Consulta carrera por id
@@ -204,6 +208,20 @@ public class CarreraService {
         
         return carreras.stream()
                 .map(carrera -> modelMapper.map(carrera, CarreraResponse.class))
+                .toList();
+    }
+    
+     /**
+     * Lista todas las carreras 
+     * 
+     * @return Lista de Carreras Response con todas
+     */
+    public List<CarreraResponse> listarTodas() {
+        
+        List<CarreraDTO> carreras = carreraRepository.findAll();
+        
+        return carreras .stream()
+                .map(carrera-> modelMapper.map(carrera, CarreraResponse.class))
                 .toList();
     }
 }
