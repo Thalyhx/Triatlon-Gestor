@@ -173,7 +173,7 @@ public class CarreraService {
 
             try {
                 restClient.patch()
-                        .uri("http://localhost:9000/api/triatletas/" + idAtleta + "/eliminarCarrera")
+                        .uri("http://localhost:9000/api/atletas/" + idAtleta + "/eliminarCarrera")
                         .retrieve()
                         .toBodilessEntity();
             } catch (Exception e) {
