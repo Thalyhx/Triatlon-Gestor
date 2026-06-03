@@ -7,10 +7,22 @@ var URL_CATEGORIAS = 'http://localhost:9002/api/categorias';
 function hacerPeticion(url, opciones) {
     return fetch(url, opciones).then(function(resp) {
         if (!resp.ok) {
-            return resp.json().catch(function() {
-                return { message: 'Error ' + resp.status };
-            }).then(function(body) {
-                throw new Error(body.message || 'Error ' + resp.status);
+            return resp.text().then(function(texto) {
+                var mensaje = 'Error ' + resp.status;
+                try {
+                    var body = JSON.parse(texto);
+                    // Spring Boot @Valid devuelve errors[] o message
+                    if (body.errors && body.errors.length > 0) {
+                        mensaje = body.errors.map(function(e) { return e.defaultMessage || e; }).join(', ');
+                    } else if (body.message) {
+                        mensaje = body.message;
+                    } else if (typeof body === 'string') {
+                        mensaje = body;
+                    }
+                } catch(e) {
+                    if (texto) mensaje = texto;
+                }
+                throw new Error(mensaje);
             });
         }
         if (resp.status === 204) return null;
