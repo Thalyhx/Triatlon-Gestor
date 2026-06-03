@@ -186,7 +186,7 @@ function renderListaAtletas() {
         for (var i = 0; i < atletas.length; i++) {
             var a = atletas[i];
             var porNombre = !search || a.nombre.toLowerCase().includes(search) || String(a.identificacion).includes(search);
-            var porGenero = !gen || a.genero === gen;
+            var porGenero = !gen || a.genero === gen || (esMasculino(gen) && esMasculino(a.genero)) || (!esMasculino(gen) && !esMasculino(a.genero));
             var porSpec   = !spec || a.especialidad === spec;
             if (porNombre && porGenero && porSpec) filtrados.push(a);
         }
@@ -216,7 +216,7 @@ function renderListaAtletas() {
                 '</div></td>' +
                 '<td><span style="font-family:monospace;font-size:12px">' + at.identificacion + '</span></td>' +
                 '<td>' + at.edad + '</td>' +
-                '<td><span class="badge ' + (at.genero === 'M' ? 'badge-m' : 'badge-f') + '">' + (at.genero === 'M' ? 'Masc' : 'Fem') + '</span></td>' +
+                '<td><span class="badge ' + badgeGenero(at.genero) + '">' + (esMasculino(at.genero) ? 'Masc' : 'Fem') + '</span></td>' +
                 '<td>' + (at.categoria || '—') + '</td>' +
                 '<td><span class="badge ' + badgeEspecialidad(at.especialidad) + '">' + (at.especialidad || '—') + '</span></td>' +
                 '<td>' + (at.modalidadCross ? '<span class="badge badge-cross">✓ Cross</span>' : '<span style="color:var(--text-muted)">—</span>') + '</td>' +
