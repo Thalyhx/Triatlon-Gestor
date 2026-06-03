@@ -12,7 +12,7 @@ function renderListaCarreras() {
         // Mapa id -> nombre de categoria
         var mapaCats = {};
         for (var i = 0; i < categorias.length; i++) {
-            mapaCats[categorias[i].id] = categorias[i].name || categorias[i].nombre || '—';
+            mapaCats[categorias[i].id] = categorias[i].nombre || '—';
         }
 
         var tbody = document.getElementById('carr-tbody');
@@ -81,7 +81,7 @@ function cargarSelectCategorias() {
         var opciones = '<option value="">Sin categoría</option>';
         for (var i = 0; i < cats.length; i++) {
             var c = cats[i];
-            opciones += '<option value="' + c.id + '">' + (c.name || c.nombre) + ' (' + c.tipo + ')</option>';
+            opciones += '<option value="' + c.id + '">' + c.nombre + ' (' + c.tipo + ')</option>';
         }
         sel.innerHTML = opciones;
     }).catch(function() {
@@ -183,7 +183,7 @@ function buildCarreraDetail(c, atletas, categoria) {
         catHTML = '<div class="card" style="margin-top:16px;border-color:var(--accent3)">' +
             '<div class="card-title"><span class="material-icons-round">category</span> Categoría</div>' +
             '<div class="info-grid">' +
-                '<div class="info-item"><div class="info-item-label">Nombre</div><div class="info-item-value">' + (categoria.name || categoria.nombre || '—') + '</div></div>' +
+                '<div class="info-item"><div class="info-item-label">Nombre</div><div class="info-item-value">' + (categoria.nombre || '—') + '</div></div>' +
                 '<div class="info-item"><div class="info-item-label">Tipo</div><div class="info-item-value">' + (categoria.tipo || '—') + '</div></div>' +
                 '<div class="info-item"><div class="info-item-label">Descripción</div><div class="info-item-value" style="font-size:13px">' + (categoria.descripcion || '—') + '</div></div>' +
             '</div>' +
@@ -321,4 +321,3 @@ function confirmarEliminacionCarrera(id) {
         showToast('error', 'No se pudo eliminar');
     });
 }
- 
