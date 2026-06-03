@@ -29,6 +29,8 @@ public class AtletaDTO extends Persona{
     private String categoria;
     private String especialidad;
     private Boolean modalidadCross;
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String foto;
     private Long idCarrera;
     
