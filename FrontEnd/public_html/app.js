@@ -112,12 +112,29 @@ function buildAthleteDetail(a) {
     '</div>';
 }
 
-// Convierte un archivo imagen a base64
+// Redimensiona imagen y la convierte a base64 comprimida (max 80x80, calidad 0.4)
+// para que quepa en el VARCHAR(255) del backend
 function fileToBase64(archivo) {
     return new Promise(function(resolve, reject) {
         var reader = new FileReader();
         reader.readAsDataURL(archivo);
-        reader.onload = function() { resolve(reader.result); };
+        reader.onload = function() {
+            var img = new Image();
+            img.onload = function() {
+                var canvas = document.createElement('canvas');
+                var MAX = 80;
+                var w = img.width;
+                var h = img.height;
+                if (w > h) { if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; } }
+                else        { if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; } }
+                canvas.width  = w;
+                canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                resolve(canvas.toDataURL('image/jpeg', 0.4));
+            };
+            img.onerror = function() { reject(new Error('imagen inválida')); };
+            img.src = reader.result;
+        };
         reader.onerror = function(e) { reject(e); };
     });
 }
