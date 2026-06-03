@@ -1,5 +1,5 @@
 // ---- DASHBOARD ----
-//
+
 function updateDashboard() {
     // Carga atletas, carreras y categorias al mismo tiempo
     Promise.all([
@@ -75,7 +75,7 @@ function updateDashboard() {
                     var cat = categorias[k];
                     html3 += '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg);border-radius:6px;border:1px solid var(--border)">' +
                         '<div>' +
-                            '<span style="font-size:13px;font-weight:600">' + (cat.name || cat.nombre || '—') + '</span>' +
+                            '<span style="font-size:13px;font-weight:600">' + (cat.nombre || '—') + '</span>' +
                             '<span style="font-size:11px;color:var(--text-muted);margin-left:8px">' + (cat.tipo || '') + '</span>' +
                         '</div>' +
                         '<span class="badge badge-swim">' + cat.id + '</span>' +
@@ -129,7 +129,7 @@ function registrarTriatleta() {
         genero: genero,
         especialidad: spec,
         modalidadCross: crossEl.value === 'si',
-        foto: ''
+        foto: null
     };
 
     // Si hay foto, primero la convierte a base64 y luego registra
