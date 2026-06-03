@@ -16,7 +16,7 @@ function renderListaCategorias() {
         var filas = '';
         for (var i = 0; i < categorias.length; i++) {
             var c = categorias[i];
-            var nombre = c.name || c.nombre || '—';
+            var nombre = c.nombre || '—';
             var desc   = (c.descripcion || '').substring(0, 80) + (c.descripcion && c.descripcion.length > 80 ? '…' : '');
             var recom  = (c.recomendacion || '—').substring(0, 60) + (c.recomendacion && c.recomendacion.length > 60 ? '…' : '');
 
@@ -141,7 +141,7 @@ function prepararModCategoria(id) {
         var panel = document.getElementById('cat-mod-panel');
         if (!panel) return;
 
-        var nombre = c.name || c.nombre;
+        var nombre = c.nombre || '—';
         panel.style.display = 'block';
         panel.innerHTML = '<div class="card" style="border-color:var(--accent)">' +
             '<div class="card-title"><span class="material-icons-round">edit</span> Modificar: ' + nombre + '</div>' +
