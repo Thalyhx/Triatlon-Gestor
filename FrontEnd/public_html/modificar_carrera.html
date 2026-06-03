@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRIATLÓN — Modificar Carrera</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="has-top-nav">
+<nav class="top-nav">
+  <div class="logo"><a href="index.html" style="text-decoration:none"><div class="logo-title">TRIATLÓN</div></a></div>
+  <div class="nav-links"><a href="index.html">Salir al Inicio</a></div>
+</nav>
+<nav class="sidebar">
+  <div class="nav-section">Principal</div>
+  <div class="nav-item" onclick="showPage('dashboard')"><span class="material-icons-round">dashboard</span> Dashboard</div>
+  <div class="nav-section">Atletas</div>
+  <div class="nav-item " onclick="showPage('reg_atleta')"><span class="material-icons-round">person_add</span> Registrar Atleta</div>
+  <div class="nav-item " onclick="showPage('lista_atletas')"><span class="material-icons-round">people</span> Lista Atletas</div>
+  <div class="nav-item " onclick="showPage('consulta_atleta')"><span class="material-icons-round">search</span> Consultar Atleta</div>
+  <div class="nav-item " onclick="showPage('modificar_atleta')"><span class="material-icons-round">edit_note</span> Modificar Atleta</div>
+  <div class="nav-item " onclick="showPage('grupos_atletas')"><span class="material-icons-round">group_work</span> Grupos</div>
+  <div class="nav-item " onclick="showPage('eliminar_atleta')"><span class="material-icons-round">person_remove</span> Eliminar Atleta</div>
+  <div class="nav-item " onclick="showPage('carrera_atleta')"><span class="material-icons-round">sports_score</span> Inscribir en Carrera</div>
+  <div class="nav-section">Carreras</div>
+  <div class="nav-item " onclick="showPage('lista_carreras')"><span class="material-icons-round">emoji_events</span> Lista Carreras</div>
+  <div class="nav-item " onclick="showPage('reg_carrera')"><span class="material-icons-round">add_circle</span> Registrar Carrera</div>
+  <div class="nav-item " onclick="showPage('detalle_carrera')"><span class="material-icons-round">info</span> Detalle Carrera</div>
+  <div class="nav-item active" onclick="showPage('modificar_carrera')"><span class="material-icons-round">tune</span> Modificar Carrera</div>
+  <div class="nav-section">Categorías</div>
+  <div class="nav-item " onclick="showPage('lista_categorias')"><span class="material-icons-round">category</span> Lista Categorías</div>
+  <div class="nav-item " onclick="showPage('reg_categoria')"><span class="material-icons-round">playlist_add</span> Registrar Categoría</div>
+  <div class="sidebar-footer">
+    <div class="stats-pill" style="margin-bottom:8px"><span style="font-size:11px;opacity:.7;letter-spacing:1px">ATLETAS</span><strong id="sidebar-count">0</strong></div>
+    <div class="stats-pill" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.2);color:var(--accent)"><span style="font-size:11px;opacity:.7;letter-spacing:1px">CARRERAS</span><strong id="sidebar-carreras">0</strong></div>
+  </div>
+</nav>
+<main class="main">
+  <div class="page-header">
+    <div><div class="page-title">MODIFICAR <span>CARRERA</span></div><div class="page-sub">// Actualizar ubicación o fecha</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="material-icons-round">search</span> Buscar Carrera</div>
+      <div class="form-group"><label class="form-label">ID de la Carrera</label><input type="text" class="form-control" id="modcarr-search-id" placeholder="Número de ID"></div>
+      <button class="btn btn-primary" onclick="cargarCarreraParaModificar()"><span class="material-icons-round">search</span> Buscar</button>
+      <div id="modcarr-not-found" style="display:none;margin-top:16px;color:var(--accent2);font-size:13px">No encontrada.</div>
+      <div id="modcarr-preview" style="display:none;margin-top:16px"></div>
+    </div>
+    <div class="card" id="modcarr-form-card" style="display:none">
+      <div class="card-title"><span class="material-icons-round">edit</span> Modificar Campo</div>
+      <div class="form-group">
+        <label class="form-label">Campo a modificar</label>
+        <select class="form-control" id="modcarr-campo" onchange="showModCarreraField()">
+          <option value="">Seleccionar campo</option>
+          <option value="ubicacion">Ubicación</option>
+          <option value="fecha">Fecha</option>
+        </select>
+      </div>
+      <div id="modcarr-field-wrap" style="display:none">
+        <div class="form-group"><label class="form-label" id="modcarr-field-label">Nuevo valor</label><div id="modcarr-field-input"></div></div>
+        <button class="btn btn-primary" onclick="aplicarModificacionCarrera()"><span class="material-icons-round">save</span> Guardar</button>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="toast-container" id="toast-container"></div>
+
+<script src="api.js"></script>
+<script src="app.js"></script>
+<script src="atletas.js"></script>
+<script src="carreras.js"></script>
+<script src="categorias.js"></script>
+<script>cargarCarreraParaModificar();</script>
+</body>
+</html>
