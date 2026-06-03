@@ -1,5 +1,5 @@
 // ---- DASHBOARD ----
-
+//
 function updateDashboard() {
     // Carga atletas, carreras y categorias al mismo tiempo
     Promise.all([
