@@ -1,211 +1,170 @@
-/* =============================================
-   TRIATLÓN GESTOR — Cliente API
-   Tres microservicios: Atletas (9000), Carreras (9001), Categorias (9002)
-   ============================================= */
+// URLs base de los tres microservicios
+var URL_ATLETAS    = 'http://localhost:9000/api/atletas';
+var URL_CARRERAS   = 'http://localhost:9001/api/carreras';
+var URL_CATEGORIAS = 'http://localhost:9002/api/categorias';
 
-const ATLETAS_BASE   = 'http://localhost:9000/api/atletas';
-const CARRERAS_BASE  = 'http://localhost:9001/api/carreras';
-const CATEGORIAS_BASE = 'http://localhost:9002/api/categorias';
-
-/* ──────────────────────────────────────────────
-   Util: petición genérica con manejo de errores
-   ────────────────────────────────────────────── */
-async function request(url, options = {}) {
-    const resp = await fetch(url, options);
-    if (!resp.ok) {
-        let msg = `Error ${resp.status}`;
-        try { const body = await resp.json(); msg = body.message || msg; } catch (_) {}
-        throw new Error(msg);
-    }
-    const ct = resp.headers.get('Content-Type') || '';
-    if (resp.status === 204 || resp.headers.get('Content-Length') === '0') return null;
-    return ct.includes('application/json') ? resp.json() : resp.text();
+// Hace un fetch y devuelve la respuesta como JSON (o null si no hay body)
+function hacerPeticion(url, opciones) {
+    return fetch(url, opciones).then(function(resp) {
+        if (!resp.ok) {
+            return resp.json().catch(function() {
+                return { message: 'Error ' + resp.status };
+            }).then(function(body) {
+                throw new Error(body.message || 'Error ' + resp.status);
+            });
+        }
+        if (resp.status === 204) return null;
+        var tipo = resp.headers.get('Content-Type') || '';
+        if (tipo.includes('application/json')) return resp.json();
+        return resp.text();
+    });
 }
 
-/* ──────────────────────────────────────────────
-   Util: enviar plain-text al body (para PATCH TXT)
-   ────────────────────────────────────────────── */
-function txtOpts(value) {
-    return { method: 'PATCH', headers: { 'Content-Type': 'text/plain' }, body: value };
+// Opciones comunes para enviar JSON
+function opcionesJSON(metodo, datos) {
+    return {
+        method: metodo,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+    };
 }
 
-/* ==============================================
-   API ATLETAS  –  puerto 9000
-   ============================================== */
-const AtletasAPI = {
+// Opciones para enviar texto plano (usado en PATCH de un solo campo)
+function opcionesTexto(valor) {
+    return {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'text/plain' },
+        body: valor
+    };
+}
 
-    /** Lista todos (opcionalmente filtrado) */
-    listarTodos(params = {}) {
-        const qs = new URLSearchParams(params).toString();
-        return request(`${ATLETAS_BASE}${qs ? '?' + qs : ''}`);
-    },
+// ---- ATLETAS ----
 
-    /** Obtener por identificacion */
-    obtenerPorId(id) {
-        return request(`${ATLETAS_BASE}/${id}`);
-    },
+function getAtletas() {
+    return hacerPeticion(URL_ATLETAS);
+}
 
-    /** Registrar nuevo atleta */
-    registrar(dto) {
-        return request(`${ATLETAS_BASE}/atleta`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dto)
-        });
-    },
+function getAtletaById(id) {
+    return hacerPeticion(URL_ATLETAS + '/' + id);
+}
 
-    /** Actualización completa PUT */
-    actualizarCompleto(id, dto) {
-        return request(`${ATLETAS_BASE}/update/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dto)
-        });
-    },
+function postAtleta(datos) {
+    return hacerPeticion(URL_ATLETAS + '/atleta', opcionesJSON('POST', datos));
+}
 
-    /** PATCH nombre */
-    actualizarNombre(id, valor) {
-        return request(`${ATLETAS_BASE}/${id}/nombre`, txtOpts(valor));
-    },
+function putAtleta(id, datos) {
+    return hacerPeticion(URL_ATLETAS + '/update/' + id, opcionesJSON('PUT', datos));
+}
 
-    /** PATCH identificacion */
-    actualizarIdentificacion(id, valor) {
-        return request(`${ATLETAS_BASE}/${id}/identificacion`, txtOpts(valor));
-    },
+function patchNombreAtleta(id, valor) {
+    return hacerPeticion(URL_ATLETAS + '/' + id + '/nombre', opcionesTexto(valor));
+}
 
-    /** PATCH categoria */
-    actualizarCategoria(id, valor) {
-        return request(`${ATLETAS_BASE}/${id}/categoria`, txtOpts(valor));
-    },
+function patchIdAtleta(id, valor) {
+    return hacerPeticion(URL_ATLETAS + '/' + id + '/identificacion', opcionesTexto(valor));
+}
 
-    /** Eliminar atleta */
-    eliminar(id) {
-        return request(`${ATLETAS_BASE}/delete/${id}`, { method: 'DELETE' });
-    },
+function patchCategoriaAtleta(id, valor) {
+    return hacerPeticion(URL_ATLETAS + '/' + id + '/categoria', opcionesTexto(valor));
+}
 
-    /** Inscribir atleta en carrera */
-    inscribirEnCarrera(idAtleta, idCarrera) {
-        return request(`${ATLETAS_BASE}/${idAtleta}/carrera/${idCarrera}`, { method: 'POST' });
-    },
+function deleteAtleta(id) {
+    return hacerPeticion(URL_ATLETAS + '/delete/' + id, { method: 'DELETE' });
+}
 
-    /** Consultar carrera del atleta */
-    consultarCarrera(idAtleta) {
-        return request(`${ATLETAS_BASE}/${idAtleta}/carrera`);
-    },
+function getCarreraAtleta(id) {
+    return hacerPeticion(URL_ATLETAS + '/' + id + '/carrera');
+}
 
-    /** Eliminar relación con carrera */
-    eliminarCarrera(idAtleta) {
-        return request(`${ATLETAS_BASE}/${idAtleta}/eliminarCarrera`, { method: 'PATCH' });
-    },
+function postInscribirAtleta(idAtleta, idCarrera) {
+    return hacerPeticion(URL_ATLETAS + '/' + idAtleta + '/carrera/' + idCarrera, { method: 'POST' });
+}
 
-    /* Filtros individuales (usados en Promise.all del dashboard) */
-    filtrarPorGenero(genero)         { return this.listarTodos({ genero }); },
-    filtrarPorCategoria(categoria)   { return this.listarTodos({ categoria }); },
-    filtrarPorEspecialidad(esp)      { return this.listarTodos({ especialidad: esp }); },
-    filtrarPorCross(val)             { return this.listarTodos({ modalidadCross: val }); },
-};
+function patchQuitarCarreraAtleta(id) {
+    return hacerPeticion(URL_ATLETAS + '/' + id + '/eliminarCarrera', { method: 'PATCH' });
+}
 
-/* ==============================================
-   API CARRERAS  –  puerto 9001
-   ============================================== */
-const CarrerasAPI = {
+function getAtletasFiltro(params) {
+    var qs = new URLSearchParams(params).toString();
+    return hacerPeticion(URL_ATLETAS + (qs ? '?' + qs : ''));
+}
 
-    listarTodas() {
-        return request(CARRERAS_BASE);
-    },
+// ---- CARRERAS ----
 
-    obtenerPorId(id) {
-        return request(`${CARRERAS_BASE}/${id}`);
-    },
+function getCarreras() {
+    return hacerPeticion(URL_CARRERAS);
+}
 
-    registrar(dto) {
-        return request(`${CARRERAS_BASE}/carrera`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dto)
-        });
-    },
+function getCarreraById(id) {
+    return hacerPeticion(URL_CARRERAS + '/' + id);
+}
 
-    eliminar(id) {
-        return request(`${CARRERAS_BASE}/delete/${id}`, { method: 'DELETE' });
-    },
+function postCarrera(datos) {
+    return hacerPeticion(URL_CARRERAS + '/carrera', opcionesJSON('POST', datos));
+}
 
-    actualizarUbicacion(id, valor) {
-        return request(`${CARRERAS_BASE}/${id}/ubicacion`, txtOpts(valor));
-    },
+function deleteCarrera(id) {
+    return hacerPeticion(URL_CARRERAS + '/delete/' + id, { method: 'DELETE' });
+}
 
-    /** fecha: string YYYY-MM-DD */
-    actualizarFecha(id, fecha) {
-        return request(`${CARRERAS_BASE}/${id}/fecha`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(fecha)
-        });
-    },
+function patchUbicacionCarrera(id, valor) {
+    return hacerPeticion(URL_CARRERAS + '/' + id + '/ubicacion', opcionesTexto(valor));
+}
 
-    consultarAtletas(id) {
-        return request(`${CARRERAS_BASE}/${id}/atletas`);
-    },
+function patchFechaCarrera(id, fecha) {
+    return hacerPeticion(URL_CARRERAS + '/' + id + '/fecha', opcionesJSON('PATCH', fecha));
+}
 
-    consultarCategoria(id) {
-        return request(`${CARRERAS_BASE}/${id}/categoria`);
-    },
+function getAtletasCarrera(id) {
+    return hacerPeticion(URL_CARRERAS + '/' + id + '/atletas');
+}
 
-    registrarAtleta(idCarrera, idAtleta) {
-        return request(`${CARRERAS_BASE}/${idCarrera}/registrarAtleta/${idAtleta}`, { method: 'POST' });
-    },
+function getCategoriaCarrera(id) {
+    return hacerPeticion(URL_CARRERAS + '/' + id + '/categoria');
+}
 
-    eliminarAtleta(idCarrera, idAtleta) {
-        return request(`${CARRERAS_BASE}/${idCarrera}/eliminarAtleta/${idAtleta}`, { method: 'DELETE' });
-    },
+function postAtletaEnCarrera(idCarrera, idAtleta) {
+    return hacerPeticion(URL_CARRERAS + '/' + idCarrera + '/registrarAtleta/' + idAtleta, { method: 'POST' });
+}
 
-    eliminarCategoria(id) {
-        return request(`${CARRERAS_BASE}/${id}/eliminarCategoria`, { method: 'PATCH' });
-    },
+function deleteAtletaDeCarrera(idCarrera, idAtleta) {
+    return hacerPeticion(URL_CARRERAS + '/' + idCarrera + '/eliminarAtleta/' + idAtleta, { method: 'DELETE' });
+}
 
-    listarPorCategoria(idCategoria) {
-        return request(`${CARRERAS_BASE}/categoria/${idCategoria}`);
-    },
-};
+function patchQuitarCategoriaCarrera(id) {
+    return hacerPeticion(URL_CARRERAS + '/' + id + '/eliminarCategoria', { method: 'PATCH' });
+}
 
-/* ==============================================
-   API CATEGORIAS  –  puerto 9002
-   ============================================== */
-const CategoriasAPI = {
+// ---- CATEGORIAS ----
 
-    listarTodas() {
-        return request(CATEGORIAS_BASE);
-    },
+function getCategorias() {
+    return hacerPeticion(URL_CATEGORIAS);
+}
 
-    obtenerPorId(id) {
-        return request(`${CATEGORIAS_BASE}/${id}`);
-    },
+function getCategoriaById(id) {
+    return hacerPeticion(URL_CATEGORIAS + '/' + id);
+}
 
-    registrar(dto) {
-        return request(`${CATEGORIAS_BASE}/categoria`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dto)
-        });
-    },
+function postCategoria(datos) {
+    return hacerPeticion(URL_CATEGORIAS + '/categoria', opcionesJSON('POST', datos));
+}
 
-    eliminar(id) {
-        return request(`${CATEGORIAS_BASE}/delete/${id}`, { method: 'DELETE' });
-    },
+function deleteCategoria(id) {
+    return hacerPeticion(URL_CATEGORIAS + '/delete/' + id, { method: 'DELETE' });
+}
 
-    actualizarDescripcion(id, valor) {
-        return request(`${CATEGORIAS_BASE}/${id}/descripcion`, txtOpts(valor));
-    },
+function patchDescripcionCategoria(id, valor) {
+    return hacerPeticion(URL_CATEGORIAS + '/' + id + '/descripcion', opcionesTexto(valor));
+}
 
-    actualizarRecomendacion(id, valor) {
-        return request(`${CATEGORIAS_BASE}/${id}/recomendacion`, txtOpts(valor));
-    },
+function patchRecomendacionCategoria(id, valor) {
+    return hacerPeticion(URL_CATEGORIAS + '/' + id + '/recomendacion', opcionesTexto(valor));
+}
 
-    consultarCarreras(id) {
-        return request(`${CATEGORIAS_BASE}/${id}/carreras`);
-    },
+function getCarrerasCategoria(id) {
+    return hacerPeticion(URL_CATEGORIAS + '/' + id + '/carreras');
+}
 
-    eliminarCarrera(idCategoria, idCarrera) {
-        return request(`${CATEGORIAS_BASE}/${idCategoria}/eliminarCarrera/${idCarrera}`, { method: 'DELETE' });
-    },
-};
+function deleteCarreraDeCategoria(idCat, idCarr) {
+    return hacerPeticion(URL_CATEGORIAS + '/' + idCat + '/eliminarCarrera/' + idCarr, { method: 'DELETE' });
+}
