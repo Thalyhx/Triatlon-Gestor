@@ -49,7 +49,22 @@ function closeModal(id) {
 
 // Devuelve la clase CSS del avatar según género
 function claseAvatar(genero) {
-    return genero === 'M' ? 'avatar-blue' : 'avatar-red';
+    return esMasculino(genero) ? 'avatar-blue' : 'avatar-red';
+}
+
+// Detecta masculino sin importar si llega 'M', 'm', 'Masculino', 'MALE', etc.
+function esMasculino(genero) {
+    if (!genero) return false;
+    var g = genero.toString().toUpperCase().trim();
+    return g === 'M' || g === 'MASCULINO' || g === 'MALE';
+}
+
+function textoGenero(genero) {
+    return esMasculino(genero) ? 'Masculino' : 'Femenino';
+}
+
+function badgeGenero(genero) {
+    return esMasculino(genero) ? 'badge-m' : 'badge-f';
 }
 
 // Devuelve la clase del badge según especialidad
@@ -80,14 +95,14 @@ function buildAthleteDetail(a) {
             '<div class="detail-name">' + a.nombre + '</div>' +
             '<div class="detail-id">ID: ' + a.identificacion + ' | ' + (a.correo || 'Sin correo') + '</div>' +
             '<div class="detail-badges">' +
-                '<span class="badge ' + (a.genero === 'M' ? 'badge-m' : 'badge-f') + '">' + (a.genero === 'M' ? 'Masculino' : 'Femenino') + '</span>' +
+                '<span class="badge ' + badgeGenero(a.genero) + '">' + textoGenero(a.genero) + '</span>' +
                 '<span class="badge badge-swim">' + (a.categoria || '—') + '</span>' +
                 '<span class="badge ' + badgeEspecialidad(a.especialidad) + '">' + icono + ' ' + (a.especialidad || '—') + '</span>' +
                 (a.modalidadCross ? '<span class="badge badge-cross">Cross</span>' : '') +
             '</div>' +
             '<div class="info-grid">' +
                 '<div class="info-item"><div class="info-item-label">Edad</div><div class="info-item-value">' + a.edad + ' años</div></div>' +
-                '<div class="info-item"><div class="info-item-label">Género</div><div class="info-item-value">' + (a.genero === 'M' ? 'Masculino' : 'Femenino') + '</div></div>' +
+                '<div class="info-item"><div class="info-item-label">Género</div><div class="info-item-value">' + textoGenero(a.genero) + '</div></div>' +
                 '<div class="info-item"><div class="info-item-label">Categoría</div><div class="info-item-value">' + (a.categoria || '—') + '</div></div>' +
                 '<div class="info-item"><div class="info-item-label">Especialidad</div><div class="info-item-value">' + (a.especialidad || '—') + '</div></div>' +
                 '<div class="info-item"><div class="info-item-label">Cross</div><div class="info-item-value" style="color:' + crossColor + '">' + (a.modalidadCross ? 'Sí' : 'No') + '</div></div>' +
